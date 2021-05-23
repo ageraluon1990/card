@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios';
+import Card from './component/Card/Card';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    galleryImages: []
+  }
+  async componentDidMount(){
+    await axios.get('https://don16obqbay2c.cloudfront.net/frontend-test-task/gallery-images.json').then(response => {
+      this.setState({
+        galleryImages: response.data.galleryImages  
+      })
+    })
+  }
+  
+  render() {
+    return (
+      <div className = "App">
+        {this.state.galleryImages.map((Images, index) =>{
+            return (
+                <Card
+                    key = {index}
+                    url = {Images.url}
+                />
+            );  
+        })} 
+      </div>
+    );
+  }
 }
 
 export default App;
+
